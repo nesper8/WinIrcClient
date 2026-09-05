@@ -1,0 +1,38 @@
+<Page
+    x:Class="WinIrcClient.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinIrcClient.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="20">
+        <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Width="360">
+            <TextBlock Text="Connect to IRC" FontSize="20" Margin="0,0,0,8" />
+            <TextBox Header="Server" Text="{x:Bind ViewModel.Server, Mode=TwoWay}" />
+            <TextBox Header="Port" Text="{x:Bind ViewModel.Port, Mode=TwoWay}" />
+            <TextBox Header="Nickname" Text="{x:Bind ViewModel.Nick, Mode=TwoWay}" />
+            <PasswordBox x:Name="PasswordBox" Header="Password" />
+            <CheckBox Content="Remember user" IsChecked="{x:Bind ViewModel.RememberUser, Mode=TwoWay}" />
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Width="150"
+                        Height="40"
+                        Click="OnLoginClicked"
+                        IsEnabled="{x:Bind ViewModel.CanLogin, Mode=OneWay}"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="Login" VerticalAlignment="Center" />
+                        <ProgressRing Width="18" Height="18" IsActive="{x:Bind ViewModel.IsLoggingIn, Mode=OneWay}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Content="Settings"
+                        Width="150"
+                        Height="40"
+                        HorizontalContentAlignment="Left"
+                        Click="OnSettingsClicked" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

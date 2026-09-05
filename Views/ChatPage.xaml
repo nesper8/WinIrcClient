@@ -1,0 +1,111 @@
+<Page
+    x:Class="WinIrcClient.Views.ChatPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinIrcClient.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:WinIrcClient.Models"
+    mc:Ignorable="d">
+
+    <Grid Padding="8" Loaded="OnLoaded">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <ComboBox x:Name="ChannelBox" Width="240" ItemsSource="{x:Bind ViewModel.Channels}" SelectedItem="{x:Bind ViewModel.CurrentChannel, Mode=TwoWay}"/>
+            <Button Content="Channels" Click="OnChannelsClicked" />
+            <TextBox Width="230" PlaceholderText="Nick for private message" Text="{x:Bind ViewModel.PrivateTarget, Mode=TwoWay}" />
+            <Button Content="Private" Click="OnPrivateClicked" />
+            <Button Content="Refresh" Click="OnRefreshClicked" />
+            <Button Content="Settings" Click="OnSettingsClicked" />
+            <Button Content="Log out" Click="OnLogoutClicked" />
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnSpacing="8" Margin="0,8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="220" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+            <ListView x:Name="MessageList" ItemsSource="{x:Bind ViewModel.Messages}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Message">
+                    <Grid Padding="4" ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{x:Bind Timestamp}" FontFamily="Cascadia Mono" Opacity="0.6" />
+                        <Button Grid.Column="1" Content="{x:Bind Sender}" Tag="{x:Bind}" Click="OnUsernameClicked" FontFamily="Cascadia Mono" />
+                        <TextBlock Grid.Column="2" Text="{x:Bind Text}" FontFamily="Cascadia Mono" TextWrapping="Wrap" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            </ListView>
+            <StackPanel x:Name="EmptyState" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
+                <TextBlock Text="No messages yet" FontFamily="Cascadia Mono" FontSize="24" HorizontalAlignment="Center" />
+                <TextBlock Text="Join a public channel or wait for a message to arrive." FontFamily="Cascadia Mono" Opacity="0.7" HorizontalAlignment="Center" />
+            </StackPanel>
+            </Grid>
+                <Border Grid.Column="1"
+                    Background="#161A1F"
+                    BorderBrush="#3A424D"
+                    BorderThickness="1"
+                    CornerRadius="6"
+                    Padding="12"
+                    Margin="0,0,8,8">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,0,0,4">
+                        <Ellipse Width="9" Height="9" Fill="#3CCB7F" VerticalAlignment="Center" />
+                        <TextBlock Text="Users" FontSize="18" FontWeight="SemiBold" />
+                    </StackPanel>
+                    <TextBlock Text="People in this channel" Opacity="0.65" FontSize="12" Margin="17,0,0,10" />
+                    <ListView ItemsSource="{x:Bind ViewModel.Users}"
+                              SelectionMode="None"
+                              Padding="0"
+                              BorderThickness="0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:User">
+                                <Button Content="{x:Bind Nick}"
+                                        Tag="{x:Bind}"
+                                        Click="OnUsernameClicked"
+                                        HorizontalContentAlignment="Left"
+                                        Padding="10,6"
+                                        Margin="0,2"
+                                        Background="#242A32"
+                                        BorderBrush="#343C47"
+                                        BorderThickness="1" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="2" ColumnSpacing="8" Margin="0,8,8,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="MessageBox"
+                     Grid.Column="0"
+                     MinWidth="0"
+                     Height="48"
+                     FontFamily="Cascadia Mono"
+                     TextWrapping="Wrap"
+                     VerticalContentAlignment="Center"
+                     Text="{x:Bind ViewModel.OutgoingText, Mode=TwoWay}"
+                     KeyDown="OnMessageBoxKeyDown" />
+                <Button Grid.Column="1"
+                    Content="Send"
+                    Height="48"
+                    VerticalContentAlignment="Center"
+                    Click="OnSendClicked" />
+        </Grid>
+    </Grid>
+</Page>

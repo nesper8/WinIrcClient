@@ -1,0 +1,25 @@
+<UserControl
+    x:Class="WinIrcClient.Views.ChannelBrowser"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:WinIrcClient.Models">
+
+    <Grid MinWidth="520" MinHeight="420">
+        <ListView ItemsSource="{x:Bind ViewModel.AvailableChannels}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:ChannelInfo">
+                    <Grid Padding="6" ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{x:Bind Name}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="1" Text="{x:Bind UserCountLabel}" Opacity="0.7" VerticalAlignment="Center" />
+                        <Button Grid.Column="2" Content="Join" Tag="{x:Bind Name}" Click="OnJoinClicked" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

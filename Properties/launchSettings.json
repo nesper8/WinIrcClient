@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WinIrcClient (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "WinIrcClient (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
