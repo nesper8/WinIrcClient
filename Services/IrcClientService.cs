@@ -317,5 +317,13 @@ namespace WinIrcClient.Services
 
             MessageReceived?.Invoke(message);
         }
+
+        public void ClearRecentMessages()
+        {
+            lock (_recentMessages)
+            {
+                _recentMessages.Clear();
+            }
+        }
     }
 }

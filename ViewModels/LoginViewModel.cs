@@ -31,7 +31,7 @@ namespace WinIrcClient.ViewModels
         private int port = 6697;
 
         [ObservableProperty]
-        private string nick = "winuser";
+        private string nick = string.Empty;
 
         [ObservableProperty]
         private string password = string.Empty;
@@ -42,11 +42,18 @@ namespace WinIrcClient.ViewModels
         [ObservableProperty]
         private bool isLoggingIn;
 
-        public bool CanLogin => !IsLoggingIn;
+        public bool CanLogin => !IsLoggingIn && !string.IsNullOrWhiteSpace(Nick);
+
+        partial void OnNickChanged(string value)
+        {
+            OnPropertyChanged(nameof(CanLogin));
+            LoginCommand.NotifyCanExecuteChanged();
+        }
 
         partial void OnIsLoggingInChanged(bool value)
         {
             OnPropertyChanged(nameof(CanLogin));
+            LoginCommand.NotifyCanExecuteChanged();
         }
 
         public void LoadRememberedUser()
@@ -61,7 +68,7 @@ namespace WinIrcClient.ViewModels
             RememberUser = true;
         }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanLogin))]
         private async Task LoginAsync()
         {
             if (IsLoggingIn) return;

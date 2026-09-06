@@ -12,7 +12,7 @@
             <TextBlock Text="Connect to IRC" FontSize="20" Margin="0,0,0,8" />
             <TextBox Header="Server" Text="{x:Bind ViewModel.Server, Mode=TwoWay}" />
             <TextBox Header="Port" Text="{x:Bind ViewModel.Port, Mode=TwoWay}" />
-            <TextBox Header="Nickname" Text="{x:Bind ViewModel.Nick, Mode=TwoWay}" />
+            <TextBox Header="Nickname" Text="{x:Bind ViewModel.Nick, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <PasswordBox x:Name="PasswordBox" Header="Password" />
             <CheckBox Content="Remember user" IsChecked="{x:Bind ViewModel.RememberUser, Mode=TwoWay}" />
             <StackPanel Orientation="Horizontal" Spacing="8">

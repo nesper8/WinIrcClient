@@ -30,6 +30,7 @@ namespace WinIrcClient.ViewModels
             _ircService.MessageReceived += OnMessageReceived;
             _ircService.UsersChanged += OnUsersChanged;
             _ircService.ChannelsChanged += OnChannelsChanged;
+            _history.HistoryCleared += OnHistoryCleared;
             Channels.Add("Server");
             CurrentChannel = string.IsNullOrWhiteSpace(_settings.LastChannel)
                 ? "Server"
@@ -41,6 +42,20 @@ namespace WinIrcClient.ViewModels
             _ircService.MessageReceived -= OnMessageReceived;
             _ircService.UsersChanged -= OnUsersChanged;
             _ircService.ChannelsChanged -= OnChannelsChanged;
+            _history.HistoryCleared -= OnHistoryCleared;
+        }
+
+        private void OnHistoryCleared()
+        {
+            var app = (App)Microsoft.UI.Xaml.Application.Current;
+            var dq = app.MainWindowInstance?.DispatcherQueue;
+            void Clear()
+            {
+                AllMessages.Clear();
+                Messages.Clear();
+                MessagesChanged?.Invoke();
+            }
+            if (dq != null) dq.TryEnqueue(Clear); else Clear();
         }
 
         public void OpenPrivateConversation(string nick)

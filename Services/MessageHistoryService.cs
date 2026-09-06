@@ -9,6 +9,8 @@ namespace WinIrcClient.Services
     public sealed class MessageHistoryService
     {
         private readonly IServiceScopeFactory _scopeFactory;
+        public event Action? HistoryCleared;
+
         public MessageHistoryService(IServiceScopeFactory scopeFactory)
         {
             _scopeFactory = scopeFactory;
@@ -50,6 +52,25 @@ namespace WinIrcClient.Services
             {
                 throw;
             }
+        }
+
+        public async Task ClearAllAsync()
+        {
+            try
+            {
+                using var scope = _scopeFactory.CreateScope();
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                await db.Messages.ExecuteDeleteAsync().ConfigureAwait(false);
+            }
+            catch
+            {
+                using var scope = _scopeFactory.CreateScope();
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                db.Messages.RemoveRange(db.Messages);
+                await db.SaveChangesAsync().ConfigureAwait(false);
+            }
+
+            HistoryCleared?.Invoke();
         }
     }
 }

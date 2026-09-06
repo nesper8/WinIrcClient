@@ -6,13 +6,45 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Padding="24">
-        <StackPanel Spacing="12">
+    <ScrollViewer Padding="24">
+        <StackPanel Spacing="16" MaxWidth="600" HorizontalAlignment="Left">
             <Button Content="Back" HorizontalAlignment="Left" Click="OnBackClicked" />
+
+            <TextBlock Text="Settings" FontSize="24" FontWeight="SemiBold" Margin="0,4,0,8" />
+
+            <TextBlock Text="Chat Behavior" FontSize="16" FontWeight="SemiBold" />
             <CheckBox x:Name="AutoScrollCheckBox"
                       Content="Automatically scroll to new incoming messages"
                       Checked="OnAutoScrollChanged"
                       Unchecked="OnAutoScrollChanged" />
+
+            <MenuFlyoutSeparator Margin="0,8,0,8" />
+
+            <TextBlock Text="Data &amp; Storage" FontSize="16" FontWeight="SemiBold" />
+            <TextBlock Text="Permanently delete all stored chat messages across all channels and private conversations from the local database."
+                       Opacity="0.7"
+                       TextWrapping="Wrap" />
+            <Button x:Name="DeleteHistoryButton"
+                    Content="Delete Chat History"
+                    Click="OnDeleteHistoryClicked"
+                    HorizontalAlignment="Left" />
+
+            <MenuFlyoutSeparator Margin="0,8,0,8" />
+
+            <TextBlock Text="Account &amp; Credentials" FontSize="16" FontWeight="SemiBold" />
+            <TextBlock Text="Remove saved server details, username, and password stored for automatic sign-in."
+                       Opacity="0.7"
+                       TextWrapping="Wrap" />
+            <Button x:Name="ClearCredentialsButton"
+                    Content="Clear Saved Credentials"
+                    Click="OnClearCredentialsClicked"
+                    HorizontalAlignment="Left" />
+
+            <InfoBar x:Name="StatusInfoBar"
+                     IsOpen="False"
+                     Severity="Success"
+                     Title="Success"
+                     Message="" />
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </Page>
